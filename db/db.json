@@ -1,6 +1,17 @@
 [
-    {
-        "title":"Test Title",
-        "text":"Test text"
-    }
+  {
+    "title": "aweasd",
+    "text": "were",
+    "id": 0
+  },
+  {
+    "title": "fart",
+    "text": "farts",
+    "id": 1
+  },
+  {
+    "title": "Note",
+    "text": "Super note",
+    "id": 2
+  }
 ]

@@ -25,14 +25,13 @@ const hide = (elem) => {
 // activeNote is used to keep track of the note in the textarea
 let activeNote = {};
 
-const getNotes = () => {
+const getNotes = () => 
   fetch('/api/notes', {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json'
     }
   });
-};
 
 const saveNote = (note) =>
   fetch('/api/notes', {
@@ -41,20 +40,38 @@ const saveNote = (note) =>
       'Content-Type': 'application/json',
     },
     body: JSON.stringify(note)
-  });
+  })
+    .then(response => {
+      if (!response.ok) {
+        alert('Error: ' + response.statusText);
+      }
+    })
+    .then(() => {
+      getAndRenderNotes();
+      renderActiveNote();
+    });
 
 const deleteNote = (id) =>
   fetch(`/api/notes/${id}`, {
     method: 'DELETE',
     headers: {
-      'Content-Type': 'application/json',
-    },
-  });
+      'Content-Type': 'application/json'
+    }
+  })
+    .then(response => {
+      if (!response.ok) {
+        alert('Error: ' + response.statusText);
+      }
+    })
+    .then(() => {
+      getAndRenderNotes();
+      renderActiveNote();
+    });
 
 const renderActiveNote = () => {
   hide(saveNoteBtn);
 
-  if (activeNote.id) {
+  if (activeNote.id >= 0) {
     noteTitle.setAttribute('readonly', true);
     noteText.setAttribute('readonly', true);
     noteTitle.value = activeNote.title;
@@ -72,10 +89,7 @@ const handleNoteSave = () => {
     title: noteTitle.value,
     text: noteText.value,
   };
-  saveNote(newNote).then(() => {
-    getAndRenderNotes();
-    renderActiveNote();
-  });
+  saveNote(newNote);
 };
 
 // Delete the clicked note
@@ -90,10 +104,7 @@ const handleNoteDelete = (e) => {
     activeNote = {};
   }
 
-  deleteNote(noteId).then(() => {
-    getAndRenderNotes();
-    renderActiveNote();
-  });
+  deleteNote(noteId);
 };
 
 // Sets the activeNote and displays it
